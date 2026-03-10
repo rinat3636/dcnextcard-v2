@@ -2,10 +2,10 @@
 nixPkgs = ["nodejs_22"]
 
 [phases.install]
-cmds = ["npm install -g pnpm", "pnpm install"]
+cmds = ["npm install -g pnpm@10", "pnpm install --frozen-lockfile"]
 
 [phases.build]
 cmds = ["pnpm run build"]
 
 [start]
-cmd = "node dist/index.js"
+cmd = "NODE_ENV=production node dist/index.js"

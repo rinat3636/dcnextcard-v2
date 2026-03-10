@@ -10,11 +10,9 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // Serve static files from dist/public in production
-  const staticPath =
-    process.env.NODE_ENV === "production"
-      ? path.resolve(__dirname, "public")
-      : path.resolve(__dirname, "..", "dist", "public");
+  // In production (Railway), dist/index.js is in dist/ and static files are in dist/public/
+  // __dirname will be /app/dist or similar, so public is at __dirname/public
+  const staticPath = path.resolve(__dirname, "public");
 
   app.use(express.static(staticPath));
 
@@ -23,10 +21,10 @@ async function startServer() {
     res.sendFile(path.join(staticPath, "index.html"));
   });
 
-  const port = process.env.PORT || 3000;
+  const port = parseInt(process.env.PORT || "3000", 10);
 
-  server.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}/`);
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`Server running on http://0.0.0.0:${port}/`);
   });
 }
 
